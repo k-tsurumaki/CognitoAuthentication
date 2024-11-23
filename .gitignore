@@ -1,6 +1,8 @@
 HELP.md
 .gradle
 .env
+/src/main/resources/auth-config-develop.properties
+/src/main/resources/auth-config-product.properties
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

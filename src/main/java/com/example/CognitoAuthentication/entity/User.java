@@ -5,29 +5,31 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_item")
+@Table(name = "tb_user")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Item {
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "item_id")
-	private Long itemId;
+	@Column(name = "user_id")
+	private Long userId;
 
-	@Column(name = "item_name", nullable = false)
-	private String itemName;
+	@Column(name = "username", nullable = false)
+	private String username;
 
-	@Column(name = "item_category", nullable = false)
-	private String itemCategory;
+	@Column(name = "email", nullable = false, unique = true)
+	private String email;
+
+	@Column(name = "role")
+	private String role;
 
 	@CreatedDate
 	@Column(name = "created_at", nullable = false, updatable = false)
@@ -41,10 +43,11 @@ public class Item {
 	private Boolean deletedFlg = false;
 
 	@Builder
-	public Item(Long itemId, String itemName, String itemCategory) {
-		this.itemId = itemId;
-		this.itemName = itemName;
-		this.itemCategory = itemCategory;
+	public User(Long userId, String username, String email, String role) {
+		this.userId = userId;
+		this.username = username;
+		this.email = email;
+		this.role = role;
 		this.deletedFlg = false;
 	}
 }

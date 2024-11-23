@@ -47,4 +47,9 @@ public class ItemController {
 		return ResponseEntity.ok().body(itemDTO);
 	}
 
+	@DeleteMapping("/{item_id}")
+	public ResponseEntity<String> deleteItem(@PathVariable("item_id") Long itemId){
+		itemService.deleteItem(itemId);
+		return ResponseEntity.noContent().build();
+	}
 }

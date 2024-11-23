@@ -1,7 +1,7 @@
 -- テーブルが存在する場合は削除
-DROP TABLE IF EXISTS m_item;
+DROP TABLE IF EXISTS tb_item;
 
-CREATE TABLE m_item (
+CREATE TABLE tb_item (
     item_id BIGINT AUTO_INCREMENT PRIMARY KEY, -- 主キー
     item_name VARCHAR(255) NOT NULL,          -- アイテム名
     item_category VARCHAR(255) NOT NULL,      -- アイテムカテゴリ

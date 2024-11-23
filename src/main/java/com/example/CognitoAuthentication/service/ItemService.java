@@ -61,7 +61,7 @@ public class ItemService {
 	}
 
 	public ItemDTO updateItem(Long itemId, ItemUpdateRequestDTO itemUpdateRequestDTO) {
-		Item item = itemRepository.findById(itemId).orElseThrow(()->new ItemNotFoundException(itemId));
+		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
 		item.setItemName(itemUpdateRequestDTO.getItemName());
 		item.setItemCategory(itemUpdateRequestDTO.getItemCategory());
 		itemRepository.save(item);
@@ -71,5 +71,12 @@ public class ItemService {
 				.itemCategory(item.getItemCategory())
 				.build();
 		return itemDTO;
+	}
+
+	public void deleteItem(Long itemId) {
+		int rowAffected = itemRepository.softDelete(itemId);
+		if (rowAffected == 0) {
+			throw new ItemNotFoundException(itemId);
+		}
 	}
 }

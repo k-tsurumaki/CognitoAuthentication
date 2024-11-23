@@ -12,7 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "m_item")
+@Table(name = "tb_item")
 @Getter
 @Setter
 @NoArgsConstructor

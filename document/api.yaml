@@ -1,0 +1,144 @@
+openapi: 3.0.0
+info:
+  title: Item API
+  description: アイテムに関する CRUD 操作を提供する API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+
+paths:
+  /items:
+    get:
+      summary: アイテム一覧を取得
+      description: 登録されている全てのアイテムを取得します。
+      responses:
+        '200':
+          description: アイテム一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+
+    post:
+      summary: 新しいアイテムを登録
+      description: 新しいアイテムを作成します。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemCreateRequest'
+      responses:
+        '201':
+          description: アイテムが正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+
+  /items/{item_id}:
+    get:
+      summary: アイテムの詳細を取得
+      description: 指定されたアイテムIDに基づいてアイテムの詳細を取得します。
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: integer
+          description: アイテムID
+      responses:
+        '200':
+          description: アイテムの詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: アイテムが見つかりません
+
+    put:
+      summary: アイテムの情報を更新
+      description: 指定されたアイテムIDの情報を更新します。
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: integer
+          description: アイテムID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemUpdateRequest'
+      responses:
+        '200':
+          description: アイテムが正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: アイテムが見つかりません
+
+    delete:
+      summary: アイテムを削除
+      description: 指定されたアイテムIDのアイテムを削除します。
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: integer
+          description: アイテムID
+      responses:
+        '204':
+          description: アイテムが正常に削除されました
+        '404':
+          description: アイテムが見つかりません
+
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        item_id:
+          type: integer
+          description: アイテムID
+        item_name:
+          type: string
+          description: アイテム名
+        item_category:
+          type: string
+          description: アイテムカテゴリ
+
+    ItemCreateRequest:
+      type: object
+      properties:
+        item_name:
+          type: string
+          description: アイテム名
+        item_category:
+          type: string
+          description: アイテムカテゴリ
+      required:
+        - item_name
+        - item_category
+
+    ItemUpdateRequest:
+      type: object
+      properties:
+        item_name:
+          type: string
+          description: アイテム名
+        item_category:
+          type: string
+          description: アイテムカテゴリ
+        deleted_flg:
+          type: boolean
+          description: 削除フラグ

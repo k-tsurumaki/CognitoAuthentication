@@ -41,8 +41,10 @@ public class Item {
 	private Boolean deletedFlg = false;
 
 	@Builder
-	public Item(String itemName, String itemCategory) {
+	public Item(Long itemId, String itemName, String itemCategory, Boolean deletedFlg) {
+		this.itemId = itemId;
 		this.itemName = itemName;
 		this.itemCategory = itemCategory;
+		this.deletedFlg = deletedFlg;
 	}
 }

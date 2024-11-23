@@ -2,6 +2,7 @@ package com.example.CognitoAuthentication.service;
 
 import com.example.CognitoAuthentication.dto.ItemCreateRequestDTO;
 import com.example.CognitoAuthentication.dto.ItemDTO;
+import com.example.CognitoAuthentication.dto.ItemUpdateRequestDTO;
 import com.example.CognitoAuthentication.entity.Item;
 import com.example.CognitoAuthentication.exception.ItemNotFoundException;
 import com.example.CognitoAuthentication.repository.ItemRepository;
@@ -35,7 +36,7 @@ public class ItemService {
 		return itemDTOS;
 	}
 
-	public ItemDTO addItem(@Valid ItemCreateRequestDTO itemCreateRequestDTO) {
+	public ItemDTO createItem(@Valid ItemCreateRequestDTO itemCreateRequestDTO) {
 		Item item = Item.builder()
 				.itemName(itemCreateRequestDTO.getItemName())
 				.itemCategory(itemCreateRequestDTO.getItemCategory())
@@ -49,8 +50,21 @@ public class ItemService {
 		return itemDTO;
 	}
 
-	public ItemDTO getItem(Long itemId) {
+	public ItemDTO getItemById(Long itemId) {
 		Item item = itemRepository.findById(itemId).orElseThrow(() -> new ItemNotFoundException(itemId));
+		ItemDTO itemDTO = ItemDTO.builder()
+				.itemId(item.getItemId())
+				.itemName(item.getItemName())
+				.itemCategory(item.getItemCategory())
+				.build();
+		return itemDTO;
+	}
+
+	public ItemDTO updateItem(Long itemId, ItemUpdateRequestDTO itemUpdateRequestDTO) {
+		Item item = itemRepository.findById(itemId).orElseThrow(()->new ItemNotFoundException(itemId));
+		item.setItemName(itemUpdateRequestDTO.getItemName());
+		item.setItemCategory(itemUpdateRequestDTO.getItemCategory());
+		itemRepository.save(item);
 		ItemDTO itemDTO = ItemDTO.builder()
 				.itemId(item.getItemId())
 				.itemName(item.getItemName())

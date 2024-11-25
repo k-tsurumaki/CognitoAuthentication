@@ -73,18 +73,19 @@ public class CognitoService {
 			String idToken = (String) responseBody.get("id_token");
 			String accessToken = (String) responseBody.get("access_token");
 
-			System.out.println(":::::"+idToken);
-			System.out.println(":::::"+accessToken);
+//			System.out.println(":::::"+idToken);
+//			System.out.println(":::::"+accessToken);
 
 			Map<String, Object> userInfo = getUserInfo(accessToken);
-			System.out.println(":::::"+userInfo);
+//			System.out.println(":::::"+userInfo);
 			String email = (String) userInfo.get("email");
 			String name = (String) userInfo.get("name");
 
 			Long userId = userService.createUser(name, email); // userServiceを使用
 
 			IdTokenDTO idTokenDTO = IdTokenDTO.builder()
-					.idToken(idToken)
+					.idToken(idToken) // accessTokenでもどっちでもできた
+//					.idToken(accessToken)
 					.userId(userId)
 					.build();
 			return idTokenDTO;

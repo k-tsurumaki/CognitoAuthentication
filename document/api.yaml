@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Item API
-  description: アイテムに関する CRUD 操作を提供する API
+  title: Item and User API
+  description: アイテムとユーザーに関する CRUD 操作を提供する API
   version: 1.0.0
 
 servers:
@@ -102,6 +102,100 @@ paths:
         '404':
           description: アイテムが見つかりません
 
+  /users:
+    get:
+      summary: ユーザー一覧を取得
+      description: 登録されている全てのユーザーを取得します。
+      responses:
+        '200':
+          description: ユーザー一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+    post:
+      summary: 新しいユーザーを登録
+      description: 新しいユーザーを作成します。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+      responses:
+        '201':
+          description: ユーザーが正常に作成されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /users/{user_id}:
+    get:
+      summary: ユーザーの詳細を取得
+      description: 指定されたユーザーIDに基づいてユーザーの詳細を取得します。
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ユーザーID
+      responses:
+        '200':
+          description: ユーザーの詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: ユーザーが見つかりません
+
+    put:
+      summary: ユーザーの情報を更新
+      description: 指定されたユーザーIDの情報を更新します。
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ユーザーID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        '200':
+          description: ユーザーが正常に更新されました
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: ユーザーが見つかりません
+
+    delete:
+      summary: ユーザーを削除
+      description: 指定されたユーザーIDのユーザーを削除します。
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+          description: ユーザーID
+      responses:
+        '204':
+          description: ユーザーが正常に削除されました
+        '404':
+          description: ユーザーが見つかりません
+
 components:
   schemas:
     Item:
@@ -142,3 +236,52 @@ components:
         deleted_flg:
           type: boolean
           description: 削除フラグ
+
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: ユーザーID
+        name:
+          type: string
+          description: ユーザー名
+        email:
+          type: string
+          description: メールアドレス
+        role:
+          type: string
+          description: ユーザーの役割
+
+    UserCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ユーザー名
+        email:
+          type: string
+          description: メールアドレス
+        password:
+          type: string
+          description: パスワード
+        role:
+          type: string
+          description: ユーザーの役割
+      required:
+        - name
+        - email
+        - password
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ユーザー名
+        email:
+          type: string
+          description: メールアドレス
+        role:
+          type: string
+          description: ユーザーの役割
